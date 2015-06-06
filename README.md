@@ -15,13 +15,13 @@ Changes from D3 3.x:
 Creates a new dispatch object for the specified *types*. Each *type* is a string representing the name of the callback type, such as `"zoom"` or `"change"`. For each type, a method is exposed on the returned dispatch object for invoking the associated callbacks. For example, if you create a dispatch for `"start"` and `"end"` callbacks:
 
 ```js
-var event = dispatch("start", "end");
+var events = dispatch("start", "end");
 ```
 
 You can then register callbacks for the different types using [dispatch.on](#on):
 
 ```js
-event
+events
     .on("start", callback1)
     .on("start.foo", callback2)
     .on("end", callback3);
@@ -30,7 +30,7 @@ event
 Lastly, you can invoke any `"start"` callbacks using [dispatch.*type*](#type):
 
 ```js
-event.start("pass arguments to callbacks here");
+events.start("pass arguments to callbacks here");
 ```
 
 <a name="on" href="#on">#</a> dispatch.<b>on</b>(<i>type</i>[, <i>callback</i>])
