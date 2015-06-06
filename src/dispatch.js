@@ -10,19 +10,28 @@ function Dispatch(types) {
       typeName,
       that = this;
 
-  that.on = function(type, callback) {
-    var i = (type += "").indexOf("."), name = "";
+  that.once = function(type, callback) {
+    type = parseType(type);
+    type.type.on(type.name, callback).once = true;
+    return that;
+  };
 
-    // Extract optional name, e.g., "foo" in "click.foo".
-    if (i >= 0) name = type.slice(i + 1), type = type.slice(0, i);
+  that.on = function(type, callback) {
+    type = parseType(type);
 
     // If a type was specified, set or get the callback as appropriate.
-    if (type) return type = typeByName.get(type), arguments.length < 2 ? type.on(name) : (type.on(name, callback), that);
+    if (type.type) return arguments.length < 2
+        ? type.type.on(type.name)
+        : (type.type.on(type.name, callback), that);
 
     // Otherwise, if a null callback was specified, remove all callbacks with the given name.
     // Otherwise, ignore! Can’t add or return untyped callbacks.
     if (arguments.length === 2) {
-      if (callback == null) typeByName.forEach(function(type) { type.on(name, null); });
+      if (callback == null) {
+        typeByName.forEach(function(t) {
+          t.on(type.name, null);
+        });
+      }
       return that;
     }
   };
@@ -33,6 +42,14 @@ function Dispatch(types) {
     type = new Type;
     typeByName.set(typeName, type);
     that[typeName] = applyOf(type);
+  }
+
+  // Extract optional name, e.g., "foo" in "click.foo".
+  function parseType(type) {
+    var i = (type += "").indexOf("."), name = "";
+    if (i >= 0) name = type.slice(i + 1), type = type.slice(0, i);
+    if (type && !(type = typeByName.get(type))) throw new Error("unknown type: " + type);
+    return {type: type, name: name};
   }
 
   function applyOf(type) {
@@ -52,18 +69,22 @@ function Type() {
 
 Type.prototype = {
   apply: function(that, args) {
-    var z = this.callbacks, // Defensive reference; copy-on-remove.
+    var callbacks = this.callbacks, // Defensive reference; copy-on-remove.
+        callback,
+        callbackValue,
         i = -1,
-        n = z.length,
-        l;
+        n = callbacks.length;
     while (++i < n) {
-      if (l = z[i].value) {
-        l.apply(that, args);
+      if (callbackValue = (callback = callbacks[i]).value) {
+        if (callback.once) this.on(callback.name, null);
+        callbackValue.apply(that, args);
       }
     }
   },
-  on: function(name, callback) {
-    var callback0 = this.callbackByName.get(name += ""), i;
+  on: function(name, value) {
+    var callback0 = this.callbackByName.get(name),
+        callback,
+        i;
 
     // Return the current callback, if any.
     if (arguments.length < 2) return callback0 && callback0.value;
@@ -77,10 +98,11 @@ Type.prototype = {
     }
 
     // Add the new callback, if any.
-    if (callback) {
-      callback = {value: callback};
+    if (value) {
+      callback = {name: name, value: value, once: false};
       this.callbackByName.set(name, callback);
       this.callbacks.push(callback);
+      return callback;
     }
   }
 };

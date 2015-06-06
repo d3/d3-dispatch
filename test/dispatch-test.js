@@ -194,3 +194,23 @@ tape("dispatch(type).on(.name, f) has no effect", function(test) {
   test.equal(d.on(".a"), undefined);
   test.end();
 });
+
+tape("dispatch(type).once(type, f) returns the dispatch object", function(test) {
+  var d = dispatch("foo");
+  test.equal(d.once("foo", function() {}), d);
+  test.end();
+});
+
+tape("dispatch(type).once(type, f) assigns the specified callback, and then removes it upon invocation", function(test) {
+  var foo = 0,
+      FOO = function() { ++foo; },
+      d = dispatch("foo", "bar");
+  d.once("foo", FOO);
+  test.equal(d.on("foo"), FOO);
+  d.foo();
+  test.equal(foo, 1);
+  test.equal(d.on("foo"), undefined);
+  d.foo();
+  test.equal(foo, 1);
+  test.end();
+});
