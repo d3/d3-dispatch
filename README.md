@@ -1,14 +1,14 @@
 # d3-dispatch
 
-Register named callbacks and call them with arguments. The dispatch mechanism is a convenient way to loosely-couple code, separating concerns and making code easier to maintain. D3 components that emit events, such as [d3-xhr](https://github.com/d3/d3-xhr), use d3-dispatch.
+Register named callbacks and call them with arguments. Dispatching is a convenient mechanism for separating concerns with loosely-coupled code. D3 components that emit events, such as [d3-xhr](https://github.com/d3/d3-xhr), use d3-dispatch.
 
 [![dispatching events](http://bl.ocks.org/mbostock/raw/5872848/thumbnail.png)](http://bl.ocks.org/mbostock/5872848)
 
 Changes from D3 3.x:
 
-* It is now an error to attempt to register a callback type name that: conflicts with a built-in property on all objects, such as `__proto__` or `hasOwnProperty`; conflicts with a built-in method on dispatch (namely, `on`); conflicts with another callback type on the same dispatch (e.g., `dispatch("foo", "foo")`).
+* It is now an error to attempt to register a callback type that: conflicts with a built-in property on all objects, such as `__proto__` or `hasOwnProperty`; conflicts with a built-in method on dispatch (namely, `on`); or conflicts with another type on the same dispatch (e.g., `dispatch("foo", "foo")`).
 
-* The exposed `dispatch[type]` field is now strictly a method for invoking callbacks. Use `dispatch.on(type, …)` to get or set callbacks, rather than `dispatch[type].on(…)`.
+* The exposed [dispatch.*type*](#type) field is now strictly a method for invoking callbacks. Use `dispatch.on(type, …)` to get or set callbacks, rather than `dispatch[type].on(…)`.
 
 <a name="dispatch" href="#dispatch">#</a> <b>dispatch</b>(<i>types…</i>)
 
@@ -48,7 +48,7 @@ Adds, removes or gets an *callback* of the specified *type*. The *type* is a str
 
 If a *callback* is specified, it is registered for the specified *type*. If a callback was already registered for the same type, the existing callback is removed before the new callback is added. To register multiple callbacks for the same type, the type may be followed by an optional namespace, such as `"click.foo"` and `"click.bar"`. You can remove all registered callbacks for a given namespace by saying `dispatch.on(".foo", null)`. If *callback* is not specified, returns the currently-assigned callback for the specified *type*, if any.
 
-The specified *callback* is invoked with the context and arguments specified by the caller; see [dispatch.type](#type).
+The specified *callback* is invoked with the context and arguments specified by the caller; see [dispatch.*type*](#type).
 
 <a name="type" href="#type">#</a> dispatch.<b>*type*</b>(<i>arguments…</i>)
 
