@@ -35,11 +35,11 @@ events.start("pass arguments to callbacks here");
 
 <a name="on" href="#on">#</a> dispatch.<b>on</b>(<i>type</i>[, <i>callback</i>])
 
-Adds, removes or gets an *callback* of the specified *type*. The *type* is a string, such as "start" or "end".
+Adds, removes or gets an *callback* of the specified *type*.
 
-If a *callback* is specified, it is registered for the specified *type*. If a callback was already registered for the same type, the existing callback is removed before the new callback is added. To register multiple callbacks for the same type, the type may be followed by an optional namespace, such as `"click.foo"` and `"click.bar"`. You can remove all registered callbacks for a given namespace by saying `dispatch.on(".foo", null)`. If *callback* is not specified, returns the currently-assigned callback for the specified *type*, if any.
+The *type* is a string, such as "start" or "end". To register multiple callbacks for the same type, the type may be followed by an optional namespace, such as `"click.foo"` and `"click.bar"`. You can remove all registered callbacks for a given namespace by saying `dispatch.on(".foo", null)`.
 
-The specified *callback* is invoked with the context and arguments specified by the caller; see [dispatch.*type*](#type).
+If a *callback* is specified, it is registered for the specified *type*. If a callback was already registered for the same type, the existing callback is removed before the new callback is added. If *callback* is not specified, returns the current callback for the specified *type*, if any. The specified *callback* is invoked with the context and arguments specified by the caller; see [dispatch.*type*](#type).
 
 <a name="type" href="#type">#</a> dispatch.<b>*type*</b>(<i>arguments…</i>)
 
