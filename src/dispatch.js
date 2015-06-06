@@ -41,7 +41,7 @@ function Dispatch(types) {
     if (typeName in that) throw new Error("illegal or duplicate type: " + typeName);
     type = new Type;
     typeByName.set(typeName, type);
-    that[typeName] = applyOf(type);
+    that[typeName] = applier(type);
   }
 
   // Extract optional name, e.g., "foo" in "click.foo".
@@ -52,9 +52,21 @@ function Dispatch(types) {
     return {type: type, name: name};
   }
 
-  function applyOf(type) {
+  function applier(type) {
     return function() {
-      type.apply(this, arguments);
+      var callbacks = type.callbacks, // Defensive reference; copy-on-remove.
+          callback,
+          callbackValue,
+          i = -1,
+          n = callbacks.length;
+
+      while (++i < n) {
+        if (callbackValue = (callback = callbacks[i]).value) {
+          if (callback.once) type.on(callback.name, null);
+          callbackValue.apply(this, arguments);
+        }
+      }
+
       return that;
     };
   }
@@ -68,19 +80,6 @@ function Type() {
 }
 
 Type.prototype = {
-  apply: function(that, args) {
-    var callbacks = this.callbacks, // Defensive reference; copy-on-remove.
-        callback,
-        callbackValue,
-        i = -1,
-        n = callbacks.length;
-    while (++i < n) {
-      if (callbackValue = (callback = callbacks[i]).value) {
-        if (callback.once) this.on(callback.name, null);
-        callbackValue.apply(that, args);
-      }
-    }
-  },
   on: function(name, value) {
     var callback0 = this.callbackByName.get(name),
         callback,
