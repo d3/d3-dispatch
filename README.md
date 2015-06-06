@@ -10,6 +10,8 @@ Changes from D3 3.x:
 
 * The exposed [dispatch.*type*](#type) field is now strictly a method for invoking callbacks. Use `dispatch.on(type, …)` to get or set callbacks, rather than `dispatch[type].on(…)`.
 
+* The `instanceof` operator now works as expected with dispatch objects.
+
 <a name="dispatch" href="#dispatch">#</a> <b>dispatch</b>(<i>types…</i>)
 
 Creates a new dispatch object for the specified *types*. Each *type* is a string representing the name of the callback type, such as `"zoom"` or `"change"`. For each type, a method is exposed on the returned dispatch object for invoking the associated callbacks. For example, if you create a dispatch for `"start"` and `"end"` callbacks:
