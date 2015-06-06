@@ -14,7 +14,9 @@ Changes from D3 3.x:
 
 <a name="dispatch" href="#dispatch">#</a> <b>dispatch</b>(<i>types…</i>)
 
-Creates a new dispatch object for the specified *types*. Each *type* is a string representing the name of the callback type, such as `"zoom"` or `"change"`. For each type, a method is exposed on the returned dispatch object for invoking the associated callbacks. For example, if you create a dispatch for `"start"` and `"end"` callbacks:
+Creates a new dispatch object for the specified *types*. Each *type* is a string representing the name of a callback type, such as `"zoom"` or `"change"`; for each type, a method is exposed on the returned dispatch object for invoking the callbacks of that type.
+
+For example, if you create a dispatch for `"start"` and `"end"` callbacks:
 
 ```js
 var events = dispatch("start", "end");
