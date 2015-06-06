@@ -15,32 +15,23 @@ Changes from D3 3.x:
 Creates a new dispatch object for the specified *types*. Each *type* is a string representing the name of the callback type, such as `"zoom"` or `"change"`. For each type, a method is exposed on the returned dispatch object for invoking the associated callbacks. For example, if you create a dispatch for `"start"` and `"end"` callbacks:
 
 ```js
-var d = dispatch("start", "end");
+var event = dispatch("start", "end");
 ```
 
 You can then register callbacks for the different types using [dispatch.on](#on):
 
 ```js
-dispatch
+event
     .on("start", callback1)
     .on("start.foo", callback2)
     .on("end", callback3);
 ```
 
-Lastly, you can invoke any `"start"` callbacks:
+Lastly, you can invoke any `"start"` callbacks using [dispatch.*type*](#type):
 
 ```js
-dispatch.start();
+event.start("pass arguments to callbacks here");
 ```
-
-The `this` context and arguments will be passed to callbacks. For example:
-
-```js
-dispatch.on("start", function(d) { console.log(this, d); });
-dispatch.start.call(context, 42); // calls console.log(context, 42);
-```
-
-See [dispatch.*type*](#type) for further details.
 
 <a name="on" href="#on">#</a> dispatch.<b>on</b>(<i>type</i>[, <i>callback</i>])
 
