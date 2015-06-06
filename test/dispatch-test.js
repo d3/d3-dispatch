@@ -1,8 +1,9 @@
 var tape = require("tape"),
     dispatch = require("../");
 
-tape("dispatch(type…) returns an object with the specified types", function(test) {
+tape("dispatch(type…) returns a dispatch object with the specified types", function(test) {
   var d = dispatch("foo", "bar");
+  test.ok(d instanceof dispatch);
   test.equal(typeof d.foo, "function");
   test.equal(typeof d.bar, "function");
   test.end();

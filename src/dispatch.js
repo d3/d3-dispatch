@@ -1,6 +1,6 @@
-export default function() {
+function dispatch() {
   return new Dispatch(arguments);
-};
+}
 
 function Dispatch(types) {
   var i = -1,
@@ -43,6 +43,8 @@ function Dispatch(types) {
   }
 }
 
+dispatch.prototype = Dispatch.prototype; // allow instanceof
+
 function Type() {
   this.callbacks = [];
   this.callbackByName = new Map;
@@ -82,3 +84,5 @@ Type.prototype = {
     }
   }
 };
+
+export default dispatch;
