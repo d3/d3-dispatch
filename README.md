@@ -19,22 +19,21 @@ Creates a new dispatch object for the specified *types*. Each *type* is a string
 For example, if you create a dispatch for `"start"` and `"end"` callbacks:
 
 ```js
-var events = dispatch("start", "end");
+var dispatcher = dispatch("start", "end");
 ```
 
 You can then register callbacks for the different types using [dispatch.on](#on):
 
 ```js
-events
-    .on("start", callback1)
-    .on("start.foo", callback2)
-    .on("end", callback3);
+dispatcher.on("start", callback1);
+dispatcher.on("start.foo", callback2);
+dispatcher.on("end", callback3);
 ```
 
 Lastly, you can invoke any `"start"` callbacks using [dispatch.*type*](#type):
 
 ```js
-events.start("pass arguments to callbacks here");
+dispatcher.start("pass arguments to callbacks here");
 ```
 
 <a name="on" href="#on">#</a> dispatch.<b>on</b>(<i>type</i>[, <i>callback</i>])
