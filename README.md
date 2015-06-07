@@ -6,7 +6,7 @@ Register named callbacks and call them with arguments. Dispatching is a convenie
 
 Changes from D3 3.x:
 
-* It is now an error to attempt to register a callback type that: conflicts with a built-in property on all objects, such as `__proto__` or `hasOwnProperty`; conflicts with a built-in method on dispatch (e.g., `once` or `on`); or conflicts with another type on the same dispatch (e.g., `dispatch("foo", "foo")`).
+* It is now an error to attempt to register a callback type that: conflicts with a built-in property on all objects, such as `__proto__` or `hasOwnProperty`; conflicts with a built-in method on dispatch (e.g., `once` or `on`);  conflicts with another type on the same dispatch (e.g., `dispatch("foo", "foo")`); is the empty string.
 
 * The exposed [dispatch.*type*](#type) field is now strictly a method for invoking callbacks. Use `dispatch.on(type, …)` to get or set callbacks, rather than `dispatch[type].on(…)`.
 

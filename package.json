@@ -21,7 +21,7 @@
     "url": "https://github.com/d3/d3-dispatch.git"
   },
   "scripts": {
-    "pretest": "mkdir -p build && d3-bundler --polyfill-map --format=umd --name=dispatch -- index.js > build/dispatch.js",
+    "pretest": "mkdir -p build && d3-bundler --format=umd --name=dispatch -- index.js > build/dispatch.js",
     "test": "faucet `find test -name '*-test.js'`",
     "prepublish": "npm run test && uglifyjs build/dispatch.js -c -m -o build/dispatch.min.js"
   },
