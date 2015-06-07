@@ -10,13 +10,6 @@ function Dispatch(types) {
       type,
       that = this;
 
-  that.once = function(type, callback) {
-    type = parseType(type);
-    that.on(type.name, callback);
-    callbackByName[type.name].once = true;
-    return that;
-  };
-
   that.on = function(type, callback) {
     type = parseType(type);
 
@@ -41,7 +34,7 @@ function Dispatch(types) {
 
       // Add the new callback, if any.
       if (callback) {
-        callback = {name: type.name, value: callback, once: false};
+        callback = {value: callback};
         callbackByName[type.name] = callback;
         callbacks.push(callback);
       }
@@ -86,7 +79,6 @@ function Dispatch(types) {
 
       while (++i < n) {
         if (callbackValue = (callback = callbacks[i]).value) {
-          if (callback.once) that.on(callback.name, null);
           callbackValue.apply(this, arguments);
         }
       }

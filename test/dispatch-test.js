@@ -13,7 +13,6 @@ tape("dispatch(type…) throws an error if a specified type name is illegal", fu
   test.throws(function() { dispatch("__proto__"); });
   test.throws(function() { dispatch("hasOwnProperty"); });
   test.throws(function() { dispatch("on"); });
-  test.throws(function() { dispatch("once"); });
   test.throws(function() { dispatch(""); });
   test.end();
 });
@@ -176,18 +175,6 @@ tape("dispatch(…).on(type) throws an error if the type is unknown", function(t
   test.end();
 });
 
-tape("dispatch(…).once(type, f) throws an error if the type is unknown", function(test) {
-  test.throws(function() { dispatch("foo").once("bar", function() {}); }, /unknown type: bar/);
-  test.throws(function() { dispatch("foo").once("__proto__", function() {}); }, /unknown type: __proto__/);
-  test.end();
-});
-
-tape("dispatch(…).once(type) throws an error if the type is unknown", function(test) {
-  test.throws(function() { dispatch("foo").once("bar"); }, /unknown type: bar/);
-  test.throws(function() { dispatch("foo").once("__proto__"); }, /unknown type: __proto__/);
-  test.end();
-});
-
 tape("dispatch(type).on(type) returns the expected callback", function(test) {
   var d = dispatch("foo");
   function A() {}
@@ -227,25 +214,5 @@ tape("dispatch(type).on(.name, f) has no effect", function(test) {
   d.bar();
   test.deepEqual(those, [b, b]);
   test.equal(d.on(".a"), undefined);
-  test.end();
-});
-
-tape("dispatch(type).once(type, f) returns the dispatch object", function(test) {
-  var d = dispatch("foo");
-  test.equal(d.once("foo", function() {}), d);
-  test.end();
-});
-
-tape("dispatch(type).once(type, f) assigns the specified callback, and then removes it upon invocation", function(test) {
-  var foo = 0,
-      FOO = function() { ++foo; },
-      d = dispatch("foo", "bar");
-  d.once("foo", FOO);
-  test.equal(d.on("foo"), FOO);
-  d.foo();
-  test.equal(foo, 1);
-  test.equal(d.on("foo"), undefined);
-  d.foo();
-  test.equal(foo, 1);
   test.end();
 });

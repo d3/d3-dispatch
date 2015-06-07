@@ -6,7 +6,7 @@ Register named callbacks and call them with arguments. Dispatching is a convenie
 
 Changes from D3 3.x:
 
-* It is now an error to attempt to register a callback type that: conflicts with a built-in property on all objects, such as `__proto__` or `hasOwnProperty`; conflicts with a built-in method on dispatch (e.g., `once` or `on`);  conflicts with another type on the same dispatch (e.g., `dispatch("foo", "foo")`); is the empty string.
+* It is now an error to attempt to register a callback type that: conflicts with a built-in property on all objects, such as `__proto__` or `hasOwnProperty`; conflicts with a built-in method on dispatch (e.g., `on`);  conflicts with another type on the same dispatch (e.g., `dispatch("foo", "foo")`); is the empty string.
 
 * The exposed [dispatch.*type*](#type) field is now strictly a method for invoking callbacks. Use `dispatch.on(type, …)` to get or set callbacks, rather than `dispatch[type].on(…)`.
 
@@ -44,10 +44,6 @@ Adds, removes or gets an *callback* of the specified *type*.
 The *type* is a string, such as `"start"` or `"end"`. To register multiple callbacks for the same type, the type may be followed by an optional namespace, such as `"start.foo"` and `"start.bar"`. You can remove all registered callbacks for a given namespace by saying `dispatch.on(".foo", null)`.
 
 If a *callback* is specified, it is registered for the specified *type*. If a callback was already registered for the same type, the existing callback is removed before the new callback is added. If *callback* is not specified, returns the current callback for the specified *type*, if any. The specified *callback* is invoked with the context and arguments specified by the caller; see [dispatch.*type*](#type).
-
-<a name="once" href="#once">#</a> dispatch.<b>once</b>(<i>type</i>, <i>callback</i>)
-
-Like [dispatch.on](#on), but automatically removes the specified *callback* upon its first invocation.
 
 <a name="type" href="#type">#</a> dispatch.<b>*type*</b>(<i>arguments…</i>)
 
