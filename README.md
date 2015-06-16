@@ -2,24 +2,24 @@
 
 Register named callbacks and call them with arguments. Dispatching is a convenient mechanism for separating concerns with loosely-coupled code. A variety of D3 components, such as [d3-xhr](https://github.com/d3/d3-xhr), use d3-dispatch to emit events. Think of this like Node’s [EventEmitter](https://nodejs.org/api/events.html), except every listener has a well-defined name so it’s easy to remove or replace them.
 
-For example, if you create a dispatch for `"start"` and `"end"` callbacks:
+For example, if you create a dispatch `d` for `"start"` and `"end"` callbacks:
 
 ```js
-var dispatcher = dispatch("start", "end");
+var d = dispatch("start", "end");
 ```
 
 You can then register callbacks for the different types using [*dispatch*.on](#on):
 
 ```js
-dispatcher.on("start", callback1);
-dispatcher.on("start.foo", callback2);
-dispatcher.on("end", callback3);
+d.on("start", callback1);
+d.on("start.foo", callback2);
+d.on("end", callback3);
 ```
 
 Lastly, you can invoke any `"start"` callbacks using [*dispatch*.*type*](#type):
 
 ```js
-dispatcher.start("pass arguments to callbacks here");
+d.start("pass arguments to callbacks here");
 ```
 
 Want a more involved example? See how to use [d3-dispatch for coordinated views](http://bl.ocks.org/mbostock/5872848).
