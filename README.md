@@ -16,7 +16,7 @@ d.on("start.foo", callback2);
 d.on("end", callback3);
 ```
 
-Lastly, you can invoke any `"start"` callbacks using [*dispatch*.*type*](#type):
+Then, you can invoke the `"start"` callbacks using [*dispatch*.*type*](#type):
 
 ```js
 d.start("pass arguments to callbacks here");
