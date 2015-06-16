@@ -2,20 +2,6 @@
 
 Register named callbacks and call them with arguments. Dispatching is a convenient mechanism for separating concerns with loosely-coupled code. A variety of D3 components, such as [d3-xhr](https://github.com/d3/d3-xhr), use d3-dispatch to emit events. Think of this like Node’s [EventEmitter](https://nodejs.org/api/events.html), except every listener has a well-defined name so it’s easy to remove or replace them.
 
-For example:
-
-[![dispatching events](http://bl.ocks.org/mbostock/raw/5872848/thumbnail.png)](http://bl.ocks.org/mbostock/5872848)
-
-## Installing
-
-If you use NPM, `npm install d3-dispatch`. Otherwise, download the [latest release](https://github.com/d3/d3-dispatch/releases/latest).
-
-## API Reference
-
-<a name="dispatch" href="#dispatch">#</a> <b>dispatch</b>(<i>types…</i>)
-
-Creates a new dispatch object for the specified *types*. Each *type* is a string representing the name of a callback type, such as `"zoom"` or `"change"`; for each type, a method is exposed on the returned dispatch object for invoking the callbacks of that type.
-
 For example, if you create a dispatch for `"start"` and `"end"` callbacks:
 
 ```js
@@ -35,6 +21,18 @@ Lastly, you can invoke any `"start"` callbacks using [*dispatch*.*type*](#type):
 ```js
 dispatcher.start("pass arguments to callbacks here");
 ```
+
+Want a more involved example? See how to use [d3-dispatch for coordinated views](http://bl.ocks.org/mbostock/5872848).
+
+## Installing
+
+If you use NPM, `npm install d3-dispatch`. Otherwise, download the [latest release](https://github.com/d3/d3-dispatch/releases/latest).
+
+## API Reference
+
+<a name="dispatch" href="#dispatch">#</a> <b>dispatch</b>(<i>types…</i>)
+
+Creates a new dispatch object for the specified *types*. Each *type* is a string representing the name of a callback type, such as `"zoom"` or `"change"`; for each type, a method is exposed on the returned dispatch object for invoking the callbacks of that type.
 
 <a name="on" href="#on">#</a> *dispatch*.<b>on</b>(<i>type</i>[, <i>callback</i>])
 
