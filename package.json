@@ -1,6 +1,6 @@
 {
   "name": "d3-dispatch",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Register named callbacks and call them with arguments.",
   "keywords": [
     "d3",
@@ -23,7 +23,7 @@
   "scripts": {
     "pretest": "mkdir -p build && d3-bundler --format=umd --name=dispatch -- index.js > build/dispatch.js",
     "test": "faucet `find test -name '*-test.js'`",
-    "prepublish": "npm run test && uglifyjs build/dispatch.js -c -m -o build/dispatch.min.js"
+    "prepublish": "npm run test && uglifyjs build/dispatch.js -c -m -o build/dispatch.min.js && rm -f build/dispatch.zip && zip -j build/dispatch.zip -- LICENSE README.md build/dispatch.js build/dispatch.min.js"
   },
   "devDependencies": {
     "d3-bundler": "~0.2.5",
