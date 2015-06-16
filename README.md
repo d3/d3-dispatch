@@ -2,15 +2,15 @@
 
 Register named callbacks and call them with arguments. Dispatching is a convenient mechanism for separating concerns with loosely-coupled code. A variety of D3 components, such as [d3-xhr](https://github.com/d3/d3-xhr), use d3-dispatch to emit events. Think of this like Node’s [EventEmitter](https://nodejs.org/api/events.html), except every listener has a well-defined name so it’s easy to remove or replace them.
 
+For example:
+
 [![dispatching events](http://bl.ocks.org/mbostock/raw/5872848/thumbnail.png)](http://bl.ocks.org/mbostock/5872848)
 
-Changes from D3 3.x:
+## Installing
 
-* It is now an error to attempt to register a callback type that: conflicts with a built-in property on all objects, such as `__proto__` or `hasOwnProperty`; conflicts with a built-in method on dispatch (e.g., `on`);  conflicts with another type on the same dispatch (e.g., `dispatch("foo", "foo")`); is the empty string.
+If you use NPM, `npm install d3-dispatch`. Otherwise, download the [latest release](https://github.com/d3/d3-dispatch/releases/latest).
 
-* The exposed [*dispatch*.*type*](#type) field is now strictly a method for invoking callbacks. Use `dispatch.on(type, …)` to get or set callbacks, rather than `dispatch[type].on(…)`.
-
-* The `instanceof` operator now works as expected with dispatch objects.
+## API Reference
 
 <a name="dispatch" href="#dispatch">#</a> <b>dispatch</b>(<i>types…</i>)
 
@@ -57,3 +57,11 @@ selection.on("click", function() {
 ```
 
 You can pass whatever arguments you want to callbacks; most commonly, you might create an object that represents an event, or pass the current datum (*d*) and index (*i*). See [function.call](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/Call) and [function.apply](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/Apply) for further information.
+
+## Changes from D3 3.x:
+
+* It is now an error to attempt to register a callback type that: conflicts with a built-in property on all objects, such as `__proto__` or `hasOwnProperty`; conflicts with a built-in method on dispatch (e.g., `on`);  conflicts with another type on the same dispatch (e.g., `dispatch("foo", "foo")`); is the empty string.
+
+* The exposed [*dispatch*.*type*](#type) field is now strictly a method for invoking callbacks. Use `dispatch.on(type, …)` to get or set callbacks, rather than `dispatch[type].on(…)`.
+
+* The `instanceof` operator now works as expected with dispatch objects.
