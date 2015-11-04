@@ -1,6 +1,6 @@
 {
   "name": "d3-dispatch",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Register named callbacks and call them with arguments.",
   "keywords": [
     "d3",
@@ -14,7 +14,7 @@
     "name": "Mike Bostock",
     "url": "http://bost.ocks.org/mike"
   },
-  "main": "build/dispatch",
+  "main": "build/dispatch.cjs",
   "jsnext:main": "index",
   "repository": {
     "type": "git",
