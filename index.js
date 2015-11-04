@@ -1,5 +1,1 @@
-import dispatch from "./src/dispatch";
-
-export {
-  dispatch
-};
+export {default as dispatch} from "./src/dispatch";
