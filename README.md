@@ -1,36 +1,42 @@
 # d3-dispatch
 
-Register named callbacks and call them with arguments. Dispatching is a convenient mechanism for separating concerns with loosely-coupled code. A variety of D3 components, such as [d3-xhr](https://github.com/d3/d3-xhr), use d3-dispatch to emit events. Think of this like Node’s [EventEmitter](https://nodejs.org/api/events.html), except every listener has a well-defined name so it’s easy to remove or replace them.
+Dispatching is a convenient mechanism for separating concerns with loosely-coupled code: register named callbacks and then call them with arbitrary arguments. A variety of D3 components, such as [d3-request](https://github.com/d3/d3-request), use this mechanism to emit events to listeners. Think of this like Node’s [EventEmitter](https://nodejs.org/api/events.html), except every listener has a well-defined name so it’s easy to remove or replace them.
 
-For example, if you create a dispatch `d` for `"start"` and `"end"` callbacks:
+For example, if you create a dispatch for `"start"` and `"end"` callbacks:
 
 ```js
-var d = dispatch("start", "end");
+var dispatch = d3_dispatch.dispatch("start", "end");
 ```
 
 You can then register callbacks for the different types using [*dispatch*.on](#on):
 
 ```js
-d.on("start", callback1);
-d.on("start.foo", callback2);
-d.on("end", callback3);
+dispatch.on("start", callback1);
+dispatch.on("start.foo", callback2);
+dispatch.on("end", callback3);
 ```
 
 Then, you can invoke the `"start"` callbacks using [*dispatch*.*type*](#type):
 
 ```js
-d.start("pass arguments to callbacks here");
+dispatch.start("pass arguments to callbacks here");
 ```
 
 Want a more involved example? See how to use [d3-dispatch for coordinated views](http://bl.ocks.org/mbostock/5872848).
 
 ## Installing
 
-If you use NPM, `npm install d3-dispatch`. Otherwise, download the [latest release](https://github.com/d3/d3-dispatch/releases/latest).
+If you use NPM, `npm install d3-dispatch`. Otherwise, download the [latest release](https://github.com/d3/d3-dispatch/releases/latest). The released bundle supports AMD, CommonJS, and vanilla environments. Create a custom build using [Rollup](https://github.com/rollup/rollup) or your preferred bundler. You can also load directly from [d3js.org](https://d3js.org):
+
+```html
+<script src="https://d3js.org/d3-dispatch.v0.2.min.js"></script>
+```
+
+In a vanilla environment, a `d3_dispatch` global is exported. [Try d3-dispatch in your browser.](https://tonicdev.com/npm/d3-dispatch)
 
 ## API Reference
 
-<a name="dispatch" href="#dispatch">#</a> <b>dispatch</b>(<i>types…</i>)
+<a name="dispatch" href="#dispatch">#</a> d3_dispatch.<b>dispatch</b>(<i>types…</i>)
 
 Creates a new dispatch object for the specified *types*. Each *type* is a string representing the name of a callback type, such as `"zoom"` or `"change"`; for each type, a method is exposed on the returned dispatch object for invoking the callbacks of that type.
 
@@ -55,11 +61,3 @@ selection.on("click", function() {
 ```
 
 You can pass whatever arguments you want to callbacks; most commonly, you might create an object that represents an event, or pass the current datum (*d*) and index (*i*). See [function.call](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/Call) and [function.apply](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/Apply) for further information.
-
-## Changes from D3 3.x:
-
-* It is now an error to attempt to register a callback type that: conflicts with a built-in property on all objects, such as `__proto__` or `hasOwnProperty`; conflicts with a built-in method on dispatch (e.g., `on`);  conflicts with another type on the same dispatch (e.g., `dispatch("foo", "foo")`); is the empty string.
-
-* The exposed [*dispatch*.*type*](#type) field is now strictly a method for invoking callbacks. Use `dispatch.on(type, …)` to get or set callbacks, rather than `dispatch[type].on(…)`.
-
-* The `instanceof` operator now works as expected with dispatch objects.
