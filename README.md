@@ -2,13 +2,13 @@
 
 Dispatching is a convenient mechanism for separating concerns with loosely-coupled code: register named callbacks and then call them with arbitrary arguments. A variety of D3 components, such as [d3-request](https://github.com/d3/d3-request), use this mechanism to emit events to listeners. Think of this like Node’s [EventEmitter](https://nodejs.org/api/events.html), except every listener has a well-defined name so it’s easy to remove or replace them.
 
-For example, if you create a dispatch for `"start"` and `"end"` callbacks:
+For example, to create a dispatch for *start* and *end* events:
 
 ```js
 var dispatch = d3_dispatch.dispatch("start", "end");
 ```
 
-You can then register callbacks for the different types using [*dispatch*.on](#on):
+You can then register callbacks for these events using [*dispatch*.on](#dispatch_on):
 
 ```js
 dispatch.on("start", callback1);
@@ -16,7 +16,7 @@ dispatch.on("start.foo", callback2);
 dispatch.on("end", callback3);
 ```
 
-Then, you can invoke the `"start"` callbacks using [*dispatch*.*type*](#type):
+Then, you can dispatch a *start* event using [*dispatch*.*type*](#dispatch_type):
 
 ```js
 dispatch.start("pass arguments to callbacks here");
@@ -38,21 +38,21 @@ In a vanilla environment, a `d3_dispatch` global is exported. [Try d3-dispatch i
 
 <a name="dispatch" href="#dispatch">#</a> d3_dispatch.<b>dispatch</b>(<i>types…</i>)
 
-Creates a new dispatch object for the specified *types*. Each *type* is a string representing the name of a callback type, such as `"zoom"` or `"change"`; for each type, a method is exposed on the returned dispatch object for invoking the callbacks of that type.
+Creates a new dispatch for the specified event *types*. Each *type* is a string, such as `"start"` or `"end"`; for each type, [a method](#dispatch_type) is exposed on the returned dispatch for invoking the callbacks of that type.
 
-<a name="on" href="#on">#</a> *dispatch*.<b>on</b>(<i>type</i>[, <i>callback</i>])
+<a name="dispatch_on" href="#dispatch_on">#</a> *dispatch*.<b>on</b>(<i>name</i>[, <i>callback</i>])
 
-Adds, removes or gets an *callback* of the specified *type*.
+Adds, removes or gets a *callback* of the specified *name*.
 
-The *type* is a string, such as `"start"` or `"end"`. To register multiple callbacks for the same type, the type may be followed by an optional namespace, such as `"start.foo"` and `"start.bar"`. You can remove all registered callbacks for a given namespace by saying `dispatch.on(".foo", null)`.
+The *name* is a string, such as `"start"` or `"end"`. A name consists of a event type optionally followed by a period (“.”) and a namespace; the optional namespace allows multiple callbacks to be registered to receive events of the same type, such as `"start.foo"` and `"start.bar"`. You can remove all callbacks for the namespace “foo” by saying `dispatch.on(".foo", null)`.
 
-If a *callback* is specified, it is registered for the specified *type*. If a callback was already registered for the same type, the existing callback is removed before the new callback is added. If *callback* is not specified, returns the current callback for the specified *type*, if any. The specified *callback* is invoked with the context and arguments specified by the caller; see [*dispatch*.*type*](#type).
+If a *callback* function is specified, it is registered for the specified (fully-qualified) *name*. If a callback was already registered for the same name, the existing callback is removed before the new callback is added. If *callback* is not specified, returns the current callback for the specified *name*, if any. The specified *callback* is invoked with the context and arguments specified by the caller; see [*dispatch*.*type*](#dispatch_type).
 
-<a name="type" href="#type">#</a> *dispatch*.<b>*type*</b>(<i>arguments…</i>)
+<a name="dispatch_type" href="#dispatch_type">#</a> *dispatch*.<b>*type*</b>(<i>arguments…</i>)
 
-The *type* method (such as `dispatch.start` for the `"start"` type) invokes each registered callback for the specified type, passing the callback the specified *arguments*. The `this` context will be used as the context of the registered callbacks.
+The *type* method (such as `dispatch.start` for the *start* event) invokes each registered callback for the given type, passing the callback the specified *arguments*. The `this` context will be used as the context of the registered callbacks.
 
-For example, if you wanted to dispatch your `"custom"` callbacks after receiving a native `"click"` event, while preserving the current `this` context and arguments, you could say:
+For example, if you wanted to dispatch your *custom* callbacks after handling a native *click* event, while preserving the current `this` context and arguments, you could say:
 
 ```js
 selection.on("click", function() {
