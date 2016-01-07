@@ -5,7 +5,7 @@ Dispatching is a convenient mechanism for separating concerns with loosely-coupl
 For example, to create a dispatch for *start* and *end* events:
 
 ```js
-var dispatch = d3_dispatch.dispatch("start", "end");
+var dispatch = d3.dispatch("start", "end");
 ```
 
 You can then register callbacks for these events using [*dispatch*.on](#dispatch_on):
@@ -36,7 +36,7 @@ In a vanilla environment, a `d3_dispatch` global is exported. [Try d3-dispatch i
 
 ## API Reference
 
-<a name="dispatch" href="#dispatch">#</a> d3_dispatch.<b>dispatch</b>(<i>types…</i>)
+<a name="dispatch" href="#dispatch">#</a> d3.<b>dispatch</b>(<i>types…</i>)
 
 Creates a new dispatch for the specified event *types*. Each *type* is a string, such as `"start"` or `"end"`; for each type, [a method](#dispatch_type) is exposed on the returned dispatch for invoking the callbacks of that type.
 
