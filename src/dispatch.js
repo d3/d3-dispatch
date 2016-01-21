@@ -45,7 +45,8 @@ function Dispatch(types) {
       for (var otherType in callbacksByType) {
         if (callback = callbackByName[otherType + type.name]) {
           callback.value = null;
-          var callbacks = callbacksByType[otherType], i = callbacks.indexOf(callback);
+          callbacks = callbacksByType[otherType];
+          i = callbacks.indexOf(callback);
           callbacksByType[otherType] = callbacks.slice(0, i).concat(callbacks.slice(i + 1));
           delete callbackByName[callback.name];
         }
@@ -72,13 +73,12 @@ function Dispatch(types) {
   function applier(type) {
     return function() {
       var callbacks = callbacksByType[type], // Defensive reference; copy-on-remove.
-          callback,
           callbackValue,
           i = -1,
           n = callbacks.length;
 
       while (++i < n) {
-        if (callbackValue = (callback = callbacks[i]).value) {
+        if (callbackValue = callbacks[i].value) {
           callbackValue.apply(this, arguments);
         }
       }
