@@ -29,7 +29,7 @@ Want a more involved example? See how to use [d3-dispatch for coordinated views]
 If you use NPM, `npm install d3-dispatch`. Otherwise, download the [latest release](https://github.com/d3/d3-dispatch/releases/latest). The released bundle supports AMD, CommonJS, and vanilla environments. Create a custom build using [Rollup](https://github.com/rollup/rollup) or your preferred bundler. You can also load directly from [d3js.org](https://d3js.org):
 
 ```html
-<script src="https://d3js.org/d3-dispatch.v0.2.min.js"></script>
+<script src="https://d3js.org/d3-dispatch.v0.3.min.js"></script>
 ```
 
 In a vanilla environment, a `d3_dispatch` global is exported. [Try d3-dispatch in your browser.](https://tonicdev.com/npm/d3-dispatch)
@@ -48,9 +48,9 @@ The *name* is a string, such as `"start"` or `"end"`. A name consists of a event
 
 If a *callback* function is specified, it is registered for the specified (fully-qualified) *name*. If a callback was already registered for the same name, the existing callback is removed before the new callback is added. If *callback* is not specified, returns the current callback for the specified *name*, if any. The specified *callback* is invoked with the context and arguments specified by the caller; see [*dispatch*.*type*](#dispatch_type).
 
-<a name="dispatch_type" href="#dispatch_type">#</a> *dispatch*.<b>*type*</b>(<i>arguments…</i>)
+<a name="dispatch_type" href="#dispatch_type">#</a> *dispatch*.<b>*type*</b>
 
-The *type* method (such as `dispatch.start` for the *start* event) invokes each registered callback for the given type, passing the callback the specified *arguments*. The `this` context will be used as the context of the registered callbacks.
+The *type* object (such as `dispatch.start` for the *start* event) exposes [call](#type_call) and [apply](#type_apply) methods which invoke each registered callback for the given type, passing the callback the specified *arguments*. The `this` context will be used as the context of the registered callbacks.
 
 For example, if you wanted to dispatch your *custom* callbacks after handling a native *click* event, while preserving the current `this` context and arguments, you could say:
 
@@ -61,3 +61,11 @@ selection.on("click", function() {
 ```
 
 You can pass whatever arguments you want to callbacks; most commonly, you might create an object that represents an event, or pass the current datum (*d*) and index (*i*). See [function.call](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/Call) and [function.apply](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/Apply) for further information.
+
+<a name="type_call" href="#type_call">#</a> *type*.<b>call</b>(<i>that</i>, [<i>arguments…</i>])
+
+Like [*function*.call](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call), invokes each registered callback for this type, passing the callback the specified *arguments*, with *that* as the `this` context.
+
+<a name="type_apply" href="#type_apply">#</a> *type*.<b>apply</b>(<i>that</i>, [<i>arguments</i>])
+
+Like [*function*.apply](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call), invokes each registered callback for this type, passing the callback the specified *arguments*, with *that* as the `this` context.

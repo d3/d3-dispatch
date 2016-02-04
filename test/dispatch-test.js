@@ -4,8 +4,8 @@ var tape = require("tape"),
 tape("dispatch(type…) returns a dispatch object with the specified types", function(test) {
   var d = dispatch.dispatch("foo", "bar");
   test.ok(d instanceof dispatch.dispatch);
-  test.equal(typeof d.foo, "function");
-  test.equal(typeof d.bar, "function");
+  test.ok("foo" in d);
+  test.ok("bar" in d);
   test.end();
 });
 
@@ -26,11 +26,11 @@ tape("dispatch(type)[type](…) invokes callbacks of the specified type", functi
   var foo = 0,
       bar = 0,
       d = dispatch.dispatch("foo", "bar").on("foo", function() { ++foo; }).on("bar", function() { ++bar; });
-  d.foo();
+  d.foo.call(null);
   test.equal(foo, 1);
   test.equal(bar, 0);
-  d.foo();
-  d.bar();
+  d.foo.call(null);
+  d.bar.call(null);
   test.equal(foo, 2);
   test.equal(bar, 1);
   test.end();
@@ -53,17 +53,23 @@ tape("dispatch(type)[type](…) invokes callbacks in the order they were added",
       d = dispatch.dispatch("foo");
   d.on("foo.a", function() { results.push("A"); });
   d.on("foo.b", function() { results.push("B"); });
-  d.foo();
+  d.foo.call(null);
   d.on("foo.c", function() { results.push("C"); });
   d.on("foo.a", function() { results.push("A"); }); // move to end
-  d.foo();
+  d.foo.call(null);
   test.deepEqual(results, ["A", "B", "B", "C", "A"]);
   test.end();
 });
 
-tape("dispatch(type)[type](…) returns the dispatch object", function(test) {
+tape("dispatch(type)[type].call(…) returns undefined", function(test) {
   var d = dispatch.dispatch("foo");
-  test.equal(d.foo(), d);
+  test.equal(d.foo.call(null), undefined);
+  test.end();
+});
+
+tape("dispatch(type)[type].apply(…) returns undefined", function(test) {
+  var d = dispatch.dispatch("foo");
+  test.equal(d.foo.apply(null), undefined);
   test.end();
 });
 
@@ -78,11 +84,11 @@ tape("dispatch(type).on(type, f) replaces an existing callback, if present", fun
       bar = 0,
       d = dispatch.dispatch("foo", "bar");
   d.on("foo", function() { ++foo; });
-  d.foo();
+  d.foo.call(null);
   test.equal(foo, 1);
   test.equal(bar, 0);
   d.on("foo", function() { ++bar; });
-  d.foo();
+  d.foo.call(null);
   test.equal(foo, 1);
   test.equal(bar, 1);
   test.end();
@@ -92,10 +98,10 @@ tape("dispatch(type).on(type, f) replacing an existing callback with itself has 
   var foo = 0,
       FOO = function() { ++foo; },
       d = dispatch.dispatch("foo").on("foo", FOO);
-  d.foo();
+  d.foo.call(null);
   test.equal(foo, 1);
   d.on("foo", FOO).on("foo", FOO).on("foo", FOO);
-  d.foo();
+  d.foo.call(null);
   test.equal(foo, 2);
   test.end();
 });
@@ -104,10 +110,10 @@ tape("dispatch(type).on(type, null) removes an existing callback, if present", f
   var foo = 0,
       d = dispatch.dispatch("foo", "bar");
   d.on("foo", function() { ++foo; });
-  d.foo();
+  d.foo.call(null);
   test.equal(foo, 1);
   d.on("foo", null);
-  d.foo();
+  d.foo.call(null);
   test.equal(foo, 1);
   test.end();
 });
@@ -116,11 +122,11 @@ tape("dispatch(type).on(type, null) does not remove a shared callback", function
   var a = 0,
       A = function() { ++a; },
       d = dispatch.dispatch("foo", "bar").on("foo", A).on("bar", A);
-  d.foo();
-  d.bar();
+  d.foo.call(null);
+  d.bar.call(null);
   test.equal(a, 2);
   d.on("foo", null);
-  d.bar();
+  d.bar.call(null);
   test.equal(a, 3);
   test.end();
 });
@@ -129,7 +135,7 @@ tape("dispatch(type).on(type, null) removing a missing callback has no effect", 
   var d = dispatch.dispatch("foo"), a = 0;
   function A() { ++a; }
   d.on("foo.a", null).on("foo", A).on("foo", null).on("foo", null);
-  d.foo();
+  d.foo.call(null);
   test.equal(a, 0);
   test.end();
 });
@@ -139,7 +145,7 @@ tape("dispatch(type).on(type, null) removing a callback does affect the current 
   function A() { d.on("foo.b", null); those.push(a); }
   function B() { those.push(b); }
   d.on("foo.a", A).on("foo.b", B);
-  d.foo();
+  d.foo.call(null);
   test.deepEqual(those, [a]);
   test.end();
 });
@@ -149,7 +155,7 @@ tape("dispatch(type).on(type, f) adding a callback does not affect the current c
   function A() { d.on("foo.b", B); those.push(a); }
   function B() { those.push(b); }
   d.on("foo.a", A);
-  d.foo();
+  d.foo.call(null);
   test.deepEqual(those, [a]);
   test.end();
 });
@@ -199,8 +205,8 @@ tape("dispatch(type).on(.name, null) removes all callbacks with the specified na
   function B() { those.push(b); }
   function C() { those.push(c); }
   d.on("foo.a", A).on("bar.a", B).on("foo", C).on(".a", null);
-  d.foo();
-  d.bar();
+  d.foo.call(null);
+  d.bar.call(null);
   test.deepEqual(those, [c]);
   test.end();
 });
@@ -210,8 +216,8 @@ tape("dispatch(type).on(.name, f) has no effect", function(test) {
   function A() { those.push(a); }
   function B() { those.push(b); }
   d.on(".a", A).on("foo.a", B).on("bar", B);
-  d.foo();
-  d.bar();
+  d.foo.call(null);
+  d.bar.call(null);
   test.deepEqual(those, [b, b]);
   test.equal(d.on(".a"), undefined);
   test.end();
