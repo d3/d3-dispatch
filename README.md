@@ -16,10 +16,16 @@ dispatch.on("start.foo", callback2);
 dispatch.on("end", callback3);
 ```
 
-Then, you can dispatch a *start* event using [*dispatch*.*type*](#dispatch_type):
+Then, you can invoke all the *start* callbacks using [*dispatch*.call](#dispatch_call) or [*dispatch*.apply](#dispatch_apply):
 
 ```js
-dispatch.start("pass arguments to callbacks here");
+dispatch.call("start");
+```
+
+Like *function*.call, you may also specify the `this` context and any arguments:
+
+```js
+dispatch.call("start", {about: "I am a context object"}, "I am an argument");
 ```
 
 Want a more involved example? See how to use [d3-dispatch for coordinated views](http://bl.ocks.org/mbostock/5872848).
@@ -46,26 +52,20 @@ Adds, removes or gets a *callback* of the specified *name*.
 
 The *name* is a string, such as `"start"` or `"end"`. A name consists of a event type optionally followed by a period (“.”) and a namespace; the optional namespace allows multiple callbacks to be registered to receive events of the same type, such as `"start.foo"` and `"start.bar"`. You can remove all callbacks for the namespace “foo” by saying `dispatch.on(".foo", null)`.
 
-If a *callback* function is specified, it is registered for the specified (fully-qualified) *name*. If a callback was already registered for the same name, the existing callback is removed before the new callback is added. If *callback* is not specified, returns the current callback for the specified *name*, if any. The specified *callback* is invoked with the context and arguments specified by the caller; see [*dispatch*.*type*](#dispatch_type).
+If a *callback* function is specified, it is registered for the specified (fully-qualified) *name*. If a callback was already registered for the same name, the existing callback is removed before the new callback is added. If *callback* is not specified, returns the current callback for the specified *name*, if any. The specified *callback* is invoked with the context and arguments specified by the caller; see [*dispatch*.call](#dispatch_call).
 
-<a name="dispatch_type" href="#dispatch_type">#</a> *dispatch*.<b>*type*</b>
+<a name="dispatch_call" href="#dispatch_call">#</a> *dispatch*.<b>call</b>(<i>type</i>[, <i>that</i>[, <i>arguments…</i>]])
 
-The *type* object (such as `dispatch.start` for the *start* event) exposes [call](#type_call) and [apply](#type_apply) methods which invoke each registered callback for the given type, passing the callback the specified *arguments*. The `this` context will be used as the context of the registered callbacks.
+Like [*function*.call](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call), invokes each registered callback for the specified *type*, passing the callback the specified *arguments*, with *that* as the `this` context. See [*dispatch*.apply](#dispatch_apply) for more information.
 
-For example, if you wanted to dispatch your *custom* callbacks after handling a native *click* event, while preserving the current `this` context and arguments, you could say:
+<a name="dispatch_apply" href="#dispatch_apply">#</a> *dispatch*.<b>apply</b>(<i>type</i>[, <i>that</i>[, <i>arguments</i>]])
+
+Like [*function*.apply](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call), invokes each registered callback for the specified *type*, passing the callback the specified *arguments*, with *that* as the `this` context. For example, if you wanted to dispatch your *custom* callbacks after handling a native *click* event, while preserving the current `this` context and arguments, you could say:
 
 ```js
 selection.on("click", function() {
-  dispatch.custom.apply(this, arguments);
+  dispatch.apply("custom", this, arguments);
 });
 ```
 
 You can pass whatever arguments you want to callbacks; most commonly, you might create an object that represents an event, or pass the current datum (*d*) and index (*i*). See [function.call](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/Call) and [function.apply](https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/Apply) for further information.
-
-<a name="type_call" href="#type_call">#</a> *type*.<b>call</b>(<i>that</i>, [<i>arguments…</i>])
-
-Like [*function*.call](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call), invokes each registered callback for this type, passing the callback the specified *arguments*, with *that* as the `this` context.
-
-<a name="type_apply" href="#type_apply">#</a> *type*.<b>apply</b>(<i>that</i>, [<i>arguments</i>])
-
-Like [*function*.apply](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call), invokes each registered callback for this type, passing the callback the specified *arguments*, with *that* as the `this` context.
