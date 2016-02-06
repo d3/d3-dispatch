@@ -46,13 +46,13 @@ In a vanilla environment, a `d3_dispatch` global is exported. [Try d3-dispatch i
 
 Creates a new dispatch for the specified event *types*. Each *type* is a string, such as `"start"` or `"end"`; for each type, [a method](#dispatch_type) is exposed on the returned dispatch for invoking the callbacks of that type.
 
-<a name="dispatch_on" href="#dispatch_on">#</a> *dispatch*.<b>on</b>(<i>name</i>[, <i>callback</i>])
+<a name="dispatch_on" href="#dispatch_on">#</a> *dispatch*.<b>on</b>(<i>typename</i>[, <i>callback</i>])
 
-Adds, removes or gets a *callback* of the specified *name*.
+Adds, removes or gets a *callback* of the specified *typename*.
 
-The *name* is a string, such as `"start"` or `"end"`. A name consists of a event type optionally followed by a period (“.”) and a namespace; the optional namespace allows multiple callbacks to be registered to receive events of the same type, such as `"start.foo"` and `"start.bar"`. You can remove all callbacks for the namespace “foo” by saying `dispatch.on(".foo", null)`.
+The *typename* is a string, such as `"start"` or `"end.foo"`. The type may be optionally followed by a period (“.”) and a name; the optional name allows multiple callbacks to be registered to receive events of the same type, such as `"start.foo"` and `"start.bar"`. You can remove all callbacks for the name “foo” by saying `dispatch.on(".foo", null)`.
 
-If a *callback* function is specified, it is registered for the specified (fully-qualified) *name*. If a callback was already registered for the same name, the existing callback is removed before the new callback is added. If *callback* is not specified, returns the current callback for the specified *name*, if any. The specified *callback* is invoked with the context and arguments specified by the caller; see [*dispatch*.call](#dispatch_call).
+If a *callback* function is specified, it is registered for the specified (fully-qualified) *typename*. If a callback was already registered for the same type and name, the existing callback is removed before the new callback is added. If *callback* is not specified, returns the current callback for the specified *typename*, if any.
 
 <a name="dispatch_call" href="#dispatch_call">#</a> *dispatch*.<b>call</b>(<i>type</i>[, <i>that</i>[, <i>arguments…</i>]])
 
