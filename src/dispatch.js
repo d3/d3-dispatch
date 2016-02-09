@@ -1,14 +1,16 @@
-var slice = Array.prototype.slice;
+var slice = Array.prototype.slice,
+    noop = {value: function() {}};
 
 function dispatch() {
-  return new Dispatch(arguments);
-}
-
-function Dispatch(typenames) {
-  for (var i = 0, n = typenames.length, _ = this._ = {}, t; i < n; ++i) {
-    if (!(t = typenames[i] + "") || (t in _)) throw new Error("illegal or duplicate type: " + t);
+  for (var i = 0, n = arguments.length, _ = {}, t; i < n; ++i) {
+    if (!(t = arguments[i] + "") || (t in _)) throw new Error("illegal or duplicate type: " + t);
     _[t] = [];
   }
+  return new Dispatch(_);
+}
+
+function Dispatch(_) {
+  this._ = _;
 }
 
 function parseTypenames(typenames, types) {
@@ -43,16 +45,17 @@ dispatch.prototype = Dispatch.prototype = {
 
     return this;
   },
+  copy: function() {
+    var copy = {}, _ = this._;
+    for (var t in _) copy[t] = _[t].slice();
+    return new Dispatch(copy);
+  },
   call: function(type, that) {
     this.apply(type, that, slice.call(arguments, 2));
   },
   apply: function(type, that, args) {
     if (!this._.hasOwnProperty(type)) throw new Error("unknown type: " + type);
-    for (var t = this._[type], i = 0, n = t.length, c; i < n; ++i) {
-      if (c = t[i].value) {
-        c.apply(that, args);
-      }
-    }
+    for (var t = this._[type], i = 0, n = t.length; i < n; ++i) t[i].value.apply(that, args);
   }
 };
 
@@ -65,10 +68,9 @@ function get(type, name) {
 }
 
 function set(type, name, callback) {
-  for (var i = 0, n = type.length, c; i < n; ++i) {
-    if ((c = type[i]).name === name) {
-      type = type.slice(0, i).concat(type.slice(i + 1));
-      c.value = null;
+  for (var i = 0, n = type.length; i < n; ++i) {
+    if (type[i].name === name) {
+      type[i] = noop, type = type.slice(0, i).concat(type.slice(i + 1));
       break;
     }
   }

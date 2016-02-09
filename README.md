@@ -56,6 +56,10 @@ To remove all callbacks for a given name `foo`, say `dispatch.on(".foo", null)`.
 
 If *callback* is not specified, returns the current callback for the specified *typenames*, if any. If multiple typenames are specified, the first matching callback is returned.
 
+<a name="dispatch_copy" href="#dispatch_copy">#</a> *dispatch*.<b>copy</b>()
+
+Returns a copy of this dispatch object. Changes to this dispatch do not affect the returned copy and <i>vice versa</i>.
+
 <a name="dispatch_call" href="#dispatch_call">#</a> *dispatch*.<b>call</b>(<i>type</i>[, <i>that</i>[, <i>arguments…</i>]])
 
 Like [*function*.call](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call), invokes each registered callback for the specified *type*, passing the callback the specified *arguments*, with *that* as the `this` context. See [*dispatch*.apply](#dispatch_apply) for more information.

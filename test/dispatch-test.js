@@ -353,3 +353,23 @@ tape("dispatch(type).on(.name, f) has no effect", function(test) {
   test.equal(d.on(".a"), undefined);
   test.end();
 });
+
+tape("dispatch(type…).copy() returns an isolated copy", function(test) {
+  var foo = function() {},
+      bar = function() {},
+      d0 = dispatch.dispatch("foo", "bar").on("foo", foo).on("bar", bar),
+      d1 = d0.copy();
+  test.equal(d1.on("foo"), foo);
+  test.equal(d1.on("bar"), bar);
+
+  // Changes to d1 don’t affect d0.
+  test.equal(d1.on("bar", null), d1);
+  test.equal(d1.on("bar"), undefined);
+  test.equal(d0.on("bar"), bar);
+
+  // Changes to d0 don’t affect d1.
+  test.equal(d0.on("foo", null), d0);
+  test.equal(d0.on("foo"), undefined);
+  test.equal(d1.on("foo"), foo);
+  test.end();
+});
