@@ -234,6 +234,72 @@ tape("dispatch(type).on(type, f) coerces type to a string", function(test) {
   test.end();
 });
 
+tape("dispatch(\"foo\", \"bar\").on(\"foo bar\", f) adds a callback for both types", function(test) {
+  var foos = 0,
+      foo = function() { ++foos; },
+      d = dispatch.dispatch("foo", "bar").on("foo bar", foo);
+  test.equal(d.on("foo"), foo);
+  test.equal(d.on("bar"), foo);
+  d.call("foo");
+  test.equal(foos, 1);
+  d.call("bar");
+  test.equal(foos, 2);
+  test.end();
+});
+
+tape("dispatch(\"foo\").on(\"foo.one foo.two\", f) adds a callback for both typenames", function(test) {
+  var foos = 0,
+      foo = function() { ++foos; },
+      d = dispatch.dispatch("foo").on("foo.one foo.two", foo);
+  test.equal(d.on("foo.one"), foo);
+  test.equal(d.on("foo.two"), foo);
+  d.call("foo");
+  test.equal(foos, 2);
+  test.end();
+});
+
+tape("dispatch(\"foo\", \"bar\").on(\"foo bar\") returns the callback for either type", function(test) {
+  var foos = 0,
+      foo = function() { ++foos; },
+      d = dispatch.dispatch("foo", "bar");
+  d.on("foo", foo);
+  test.equal(d.on("foo bar"), foo);
+  test.equal(d.on("bar foo"), foo);
+  d.on("foo", null).on("bar", foo);
+  test.equal(d.on("foo bar"), foo);
+  test.equal(d.on("bar foo"), foo);
+  test.end();
+});
+
+tape("dispatch(\"foo\").on(\"foo.one foo.two\") returns the callback for either typename", function(test) {
+  var foos = 0,
+      foo = function() { ++foos; },
+      d = dispatch.dispatch("foo");
+  d.on("foo.one", foo);
+  test.equal(d.on("foo.one foo.two"), foo);
+  test.equal(d.on("foo.two foo.one"), foo);
+  test.equal(d.on("foo foo.one"), foo);
+  test.equal(d.on("foo.one foo"), foo);
+  d.on("foo.one", null).on("foo.two", foo);
+  test.equal(d.on("foo.one foo.two"), foo);
+  test.equal(d.on("foo.two foo.one"), foo);
+  test.equal(d.on("foo foo.two"), foo);
+  test.equal(d.on("foo.two foo"), foo);
+  test.end();
+});
+
+tape("dispatch(\"foo\").on(\".one .two\", null) removes the callback for either typename", function(test) {
+  var foos = 0,
+      foo = function() { ++foos; },
+      d = dispatch.dispatch("foo");
+  d.on("foo.one", foo);
+  d.on("foo.two", foo);
+  d.on("foo.one foo.two", null);
+  test.equal(d.on("foo.one"), undefined);
+  test.equal(d.on("foo.two"), undefined);
+  test.end();
+});
+
 tape("dispatch(…).on(type, f) throws an error if the type is unknown", function(test) {
   test.throws(function() { dispatch.dispatch("foo").on("bar", function() {}); }, /unknown type: bar/);
   test.throws(function() { dispatch.dispatch("foo").on("__proto__", function() {}); }, /unknown type: __proto__/);

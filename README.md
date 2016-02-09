@@ -46,13 +46,15 @@ In a vanilla environment, a `d3_dispatch` global is exported. [Try d3-dispatch i
 
 Creates a new dispatch for the specified event *types*. Each *type* is a string, such as `"start"` or `"end"`; for each type, [a method](#dispatch_type) is exposed on the returned dispatch for invoking the callbacks of that type.
 
-<a name="dispatch_on" href="#dispatch_on">#</a> *dispatch*.<b>on</b>(<i>typename</i>[, <i>callback</i>])
+<a name="dispatch_on" href="#dispatch_on">#</a> *dispatch*.<b>on</b>(<i>typenames</i>[, <i>callback</i>])
 
-Adds, removes or gets a *callback* of the specified *typename*. If a *callback* function is specified, it is registered for the specified (fully-qualified) *typename*. If a callback was already registered for the same *typename*, the existing callback is removed before the new callback is added.
+Adds, removes or gets the *callback* for the specified *typenames*. If a *callback* function is specified, it is registered for the specified (fully-qualified) *typenames*. If a callback was already registered for the given *typenames*, the existing callback is removed before the new callback is added.
 
-The *typename* is a string, such as `"start"` or `"end.foo"`. The type may be optionally followed by a period (“.”) and a name; the optional name allows multiple callbacks to be registered to receive events of the same type, such as `"start.foo"` and `"start.bar"`. You can also remove all callbacks for a given name “foo” by saying `dispatch.on(".foo", null)`.
+The specified *typenames* is a string, such as `start` or `end.foo`. The type may be optionally followed by a period (`.`) and a name; the optional name allows multiple callbacks to be registered to receive events of the same type, such as `start.foo` and `start.bar`. To specify multiple typenames, separate typenames with spaces, such as `start end` or `start.foo start.bar`.
 
-If *callback* is not specified, returns the current callback for the specified *typename*, if any.
+To remove all callbacks for a given name `foo`, say `dispatch.on(".foo", null)`.
+
+If *callback* is not specified, returns the current callback for the specified *typenames*, if any. If multiple typenames are specified, the first matching callback is returned.
 
 <a name="dispatch_call" href="#dispatch_call">#</a> *dispatch*.<b>call</b>(<i>type</i>[, <i>that</i>[, <i>arguments…</i>]])
 
