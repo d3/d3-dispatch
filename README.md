@@ -35,7 +35,7 @@ Want a more involved example? See how to use [d3-dispatch for coordinated views]
 If you use NPM, `npm install d3-dispatch`. Otherwise, download the [latest release](https://github.com/d3/d3-dispatch/releases/latest). The released bundle supports AMD, CommonJS, and vanilla environments. Create a custom build using [Rollup](https://github.com/rollup/rollup) or your preferred bundler. You can also load directly from [d3js.org](https://d3js.org):
 
 ```html
-<script src="https://d3js.org/d3-dispatch.v0.3.min.js"></script>
+<script src="https://d3js.org/d3-dispatch.v0.4.min.js"></script>
 ```
 
 In a vanilla environment, a `d3_dispatch` global is exported. [Try d3-dispatch in your browser.](https://tonicdev.com/npm/d3-dispatch)
