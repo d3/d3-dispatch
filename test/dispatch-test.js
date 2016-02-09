@@ -205,23 +205,45 @@ tape("dispatch(type).on(type, null) removing a missing callback has no effect", 
   test.end();
 });
 
-tape("dispatch(type).on(type, null) removing a callback does affect the current call", function(test) {
-  var d = dispatch.dispatch("foo"), a = {}, b = {}, those = [];
-  function A() { d.on("foo.b", null); those.push(a); }
-  function B() { those.push(b); }
-  d.on("foo.a", A).on("foo.b", B);
+tape("dispatch(type).on(type, null) during a callback does not invoke the old callback", function(test) {
+  var a = 0,
+      b = 0,
+      c = 0,
+      A = function() { ++a; d.on("foo.B", null); }, // remove B
+      B = function() { ++b; },
+      C = function() { ++c; },
+      d = dispatch.dispatch("foo").on("foo.A", A).on("foo.B", B);
   d.call("foo");
-  test.deepEqual(those, [a]);
+  test.equal(a, 1);
+  test.equal(b, 0);
+  test.equal(c, 0);
   test.end();
 });
 
-tape("dispatch(type).on(type, f) adding a callback does not affect the current call", function(test) {
-  var d = dispatch.dispatch("foo"), a = {}, b = {}, those = [];
-  function A() { d.on("foo.b", B); those.push(a); }
-  function B() { those.push(b); }
-  d.on("foo.a", A);
+tape("dispatch(type).on(type, f) during a callback does not invoke the old or the new callback", function(test) {
+  var a = 0,
+      b = 0,
+      c = 0,
+      A = function() { ++a; d.on("foo.B", C); }, // replace B with C
+      B = function() { ++b; },
+      C = function() { ++c; },
+      d = dispatch.dispatch("foo").on("foo.A", A).on("foo.B", B);
   d.call("foo");
-  test.deepEqual(those, [a]);
+  test.equal(a, 1);
+  test.equal(b, 0);
+  test.equal(c, 0);
+  test.end();
+});
+
+tape("dispatch(type).on(type, f) during a callback does not invoke the new callback", function(test) {
+  var a = 0,
+      b = 0,
+      A = function() { ++a; d.on("foo.B", B); }, // add B
+      B = function() { ++b; },
+      d = dispatch.dispatch("foo").on("foo.A", A);
+  d.call("foo");
+  test.equal(a, 1);
+  test.equal(b, 0);
   test.end();
 });
 
