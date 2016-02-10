@@ -1,5 +1,4 @@
-var slice = Array.prototype.slice,
-    noop = {value: function() {}};
+var noop = {value: function() {}};
 
 function dispatch() {
   for (var i = 0, n = arguments.length, _ = {}, t; i < n; ++i) {
@@ -51,7 +50,8 @@ dispatch.prototype = Dispatch.prototype = {
     return new Dispatch(copy);
   },
   call: function(type, that) {
-    this.apply(type, that, slice.call(arguments, 2));
+    if ((n = arguments.length - 2) > 0) for (var args = new Array(n), i = 0, n; i < n; ++i) args[i] = arguments[i + 2];
+    this.apply(type, that, args);
   },
   apply: function(type, that, args) {
     if (!this._.hasOwnProperty(type)) throw new Error("unknown type: " + type);
