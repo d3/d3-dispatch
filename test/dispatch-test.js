@@ -4,6 +4,7 @@ var tape = require("tape"),
 tape("dispatch(type…) returns a dispatch object with the specified types", function(test) {
   var d = dispatch.dispatch("foo", "bar");
   test.ok(d instanceof dispatch.dispatch);
+  test.equal(d.constructor.name, "Dispatch");
   test.end();
 });
 
