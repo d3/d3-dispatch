@@ -32,13 +32,18 @@ Want a more involved example? See how to use [d3-dispatch for coordinated views]
 
 ## Installing
 
-If you use NPM, `npm install d3-dispatch`. Otherwise, download the [latest release](https://github.com/d3/d3-dispatch/releases/latest). The released bundle supports AMD, CommonJS, and vanilla environments. Create a custom build using [Rollup](https://github.com/rollup/rollup) or your preferred bundler. You can also load directly from [d3js.org](https://d3js.org):
+If you use NPM, `npm install d3-dispatch`. Otherwise, download the [latest release](https://github.com/d3/d3-dispatch/releases/latest). You can also load directly from [d3js.org](https://d3js.org), either as a [standalone library](https://d3js.org/d3-dispatch.v0.4.min.js) or as part of [D3 4.0 alpha](https://github.com/mbostock/d3/tree/4). AMD, CommonJS, and vanilla environments are supported. In vanilla, a `d3_dispatch` global is exported:
 
 ```html
 <script src="https://d3js.org/d3-dispatch.v0.4.min.js"></script>
+<script>
+
+var dispatch = d3_dispatch.dispatch("start", "end");
+
+</script>
 ```
 
-In a vanilla environment, a `d3_dispatch` global is exported. [Try d3-dispatch in your browser.](https://tonicdev.com/npm/d3-dispatch)
+[Try d3-dispatch in your browser.](https://tonicdev.com/npm/d3-dispatch)
 
 ## API Reference
 
