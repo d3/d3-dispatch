@@ -2,7 +2,7 @@ var noop = {value: function() {}};
 
 function dispatch() {
   for (var i = 0, n = arguments.length, _ = {}, t; i < n; ++i) {
-    if (!(t = arguments[i] + "") || (t in _)) throw new Error("illegal or duplicate type: " + t);
+    if (!(t = arguments[i] + "") || (t in _)) throw new Error;
     _[t] = [];
   }
   return new Dispatch(_);
@@ -16,7 +16,7 @@ function parseTypenames(typenames, types) {
   return typenames.trim().split(/^|\s+/).map(function(t) {
     var name = "", i = t.indexOf(".");
     if (i >= 0) name = t.slice(i + 1), t = t.slice(0, i);
-    if (t && !types.hasOwnProperty(t)) throw new Error("unknown type: " + t);
+    if (t && !types.hasOwnProperty(t)) throw new Error;
     return {type: t, name: name};
   });
 }
@@ -38,6 +38,7 @@ Dispatch.prototype = dispatch.prototype = {
 
     // If a type was specified, set the callback for the given type and name.
     // Otherwise, if a null callback was specified, remove callbacks of the given name.
+    if (callback != null && typeof callback !== "function") throw new Error;
     while (++i < n) {
       if (t = (typename = T[i]).type) _[t] = set(_[t], typename.name, callback);
       else if (callback == null) for (t in _) _[t] = set(_[t], typename.name, null);
@@ -55,7 +56,7 @@ Dispatch.prototype = dispatch.prototype = {
     this.apply(type, that, args);
   },
   apply: function(type, that, args) {
-    if (!this._.hasOwnProperty(type)) throw new Error("unknown type: " + type);
+    if (!this._.hasOwnProperty(type)) throw new Error;
     for (var t = this._[type], i = 0, n = t.length; i < n; ++i) t[i].value.apply(that, args);
   }
 };

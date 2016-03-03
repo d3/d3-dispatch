@@ -323,15 +323,20 @@ tape("dispatch(\"foo\").on(\".one .two\", null) removes the callback for either 
   test.end();
 });
 
+tape("dispatch(type).on(type, f) throws an error if f is not a function", function(test) {
+  test.throws(function() { dispatch.dispatch("foo").on("foo", 42); });
+  test.end();
+});
+
 tape("dispatch(…).on(type, f) throws an error if the type is unknown", function(test) {
-  test.throws(function() { dispatch.dispatch("foo").on("bar", function() {}); }, /unknown type: bar/);
-  test.throws(function() { dispatch.dispatch("foo").on("__proto__", function() {}); }, /unknown type: __proto__/);
+  test.throws(function() { dispatch.dispatch("foo").on("bar", function() {}); });
+  test.throws(function() { dispatch.dispatch("foo").on("__proto__", function() {}); });
   test.end();
 });
 
 tape("dispatch(…).on(type) throws an error if the type is unknown", function(test) {
-  test.throws(function() { dispatch.dispatch("foo").on("bar"); }, /unknown type: bar/);
-  test.throws(function() { dispatch.dispatch("foo").on("__proto__"); }, /unknown type: __proto__/);
+  test.throws(function() { dispatch.dispatch("foo").on("bar"); });
+  test.throws(function() { dispatch.dispatch("foo").on("__proto__"); });
   test.end();
 });
 
