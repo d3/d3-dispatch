@@ -1,6 +1,6 @@
 {
   "name": "d3-dispatch",
-  "version": "0.5.0",
+  "version": "1.0.0",
   "description": "Register named callbacks and call them with arguments.",
   "keywords": [
     "d3",
