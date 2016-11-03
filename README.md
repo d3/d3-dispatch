@@ -49,7 +49,7 @@ var dispatch = d3.dispatch("start", "end");
 
 <a name="dispatch" href="#dispatch">#</a> d3.<b>dispatch</b>(<i>types…</i>) [<>](https://github.com/d3/d3-dispatch/blob/master/src/dispatch.js "Source")
 
-Creates a new dispatch for the specified event *types*. Each *type* is a string, such as `"start"` or `"end"`; for each type, [a method](#dispatch_type) is exposed on the returned dispatch for invoking the callbacks of that type.
+Creates a new dispatch for the specified event *types*. Each *type* is a string, such as `"start"` or `"end"`.
 
 <a name="dispatch_on" href="#dispatch_on">#</a> *dispatch*.<b>on</b>(<i>typenames</i>[, <i>callback</i>]) [<>](https://github.com/d3/d3-dispatch/blob/master/src/dispatch.js#L26 "Source")
 
