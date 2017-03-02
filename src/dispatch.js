@@ -59,6 +59,12 @@ Dispatch.prototype = dispatch.prototype = {
   apply: function(type, that, args) {
     if (!this._.hasOwnProperty(type)) throw new Error("unknown type: " + type);
     for (var t = this._[type], i = 0, n = t.length; i < n; ++i) t[i].value.apply(that, args);
+  },
+  register: function {
+    for (var i = 0, n = arguments.length, _ = {}, t; i < n; ++i) {
+      if (!(t = arguments[i] + "") || (t in this._)) throw new Error("illegal type: " + t);
+      this._[t] = [];
+    }
   }
 };
 
