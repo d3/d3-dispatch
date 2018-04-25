@@ -1,9 +1,11 @@
 var noop = {value: function() {}};
 
 function dispatch() {
-  for (var i = 0, n = arguments.length, _ = {}, t; i < n; ++i) {
-    if (!(t = arguments[i] + "") || (t in _)) throw new Error("illegal type: " + t);
-    _[t] = [];
+  for (var i = 0, n = arguments.length, _ = {}; i < n; ++i) {
+    (arguments[i] + "").trim().split(/\s+/).forEach(function(t) {
+      if (!t || (t in _) || t.indexOf(".") >= 0) throw new Error("illegal type: " + t);
+      _[t] = [];
+    });
   }
   return new Dispatch(_);
 }

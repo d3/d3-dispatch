@@ -8,6 +8,14 @@ tape("dispatch(type…) returns a dispatch object with the specified types", fun
   test.end();
 });
 
+tape("dispatch(type…) allows space separated types", function(test) {
+  var d = dispatch.dispatch("foo bar");
+  test.doesNotThrow(function() { d.on("foo", null); })
+  test.doesNotThrow(function() { d.on("bar", null); })
+  test.throws(function() { d.on("baz", null); })
+  test.end();
+});
+
 tape("dispatch(type…) does not throw an error if a specified type name collides with a dispatch method", function(test) {
   var d = dispatch.dispatch("on");
   test.ok(d instanceof dispatch.dispatch);
@@ -18,6 +26,13 @@ tape("dispatch(type…) throws an error if a specified type name is illegal", fu
   test.throws(function() { dispatch.dispatch("__proto__"); });
   test.throws(function() { dispatch.dispatch("hasOwnProperty"); });
   test.throws(function() { dispatch.dispatch(""); });
+  test.throws(function() { dispatch.dispatch("foo __proto__"); });
+  test.end();
+});
+
+tape("dispatch(type…) throws an error if a specified type name has a period", function(test) {
+  test.throws(function() { dispatch.dispatch("foo.start"); });
+  test.throws(function() { dispatch.dispatch(".foo"); });
   test.end();
 });
 
