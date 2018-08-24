@@ -4,7 +4,6 @@ var tape = require("tape"),
 tape("dispatch(type…) returns a dispatch object with the specified types", function(test) {
   var d = dispatch.dispatch("foo", "bar");
   test.ok(d instanceof dispatch.dispatch);
-  test.equal(d.constructor.name, "Dispatch");
   test.end();
 });
 
@@ -212,7 +211,6 @@ tape("dispatch(type).on(type, null) during a callback does not invoke the old ca
       c = 0,
       A = function() { ++a; d.on("foo.B", null); }, // remove B
       B = function() { ++b; },
-      C = function() { ++c; },
       d = dispatch.dispatch("foo").on("foo.A", A).on("foo.B", B);
   d.call("foo");
   test.equal(a, 1);
@@ -282,8 +280,7 @@ tape("dispatch(\"foo\").on(\"foo.one foo.two\", f) adds a callback for both type
 });
 
 tape("dispatch(\"foo\", \"bar\").on(\"foo bar\") returns the callback for either type", function(test) {
-  var foos = 0,
-      foo = function() { ++foos; },
+  var foo = function() {},
       d = dispatch.dispatch("foo", "bar");
   d.on("foo", foo);
   test.equal(d.on("foo bar"), foo);
@@ -295,8 +292,7 @@ tape("dispatch(\"foo\", \"bar\").on(\"foo bar\") returns the callback for either
 });
 
 tape("dispatch(\"foo\").on(\"foo.one foo.two\") returns the callback for either typename", function(test) {
-  var foos = 0,
-      foo = function() { ++foos; },
+  var foo = function() {},
       d = dispatch.dispatch("foo");
   d.on("foo.one", foo);
   test.equal(d.on("foo.one foo.two"), foo);
@@ -312,8 +308,7 @@ tape("dispatch(\"foo\").on(\"foo.one foo.two\") returns the callback for either 
 });
 
 tape("dispatch(\"foo\").on(\".one .two\", null) removes the callback for either typename", function(test) {
-  var foos = 0,
-      foo = function() { ++foos; },
+  var foo = function() {},
       d = dispatch.dispatch("foo");
   d.on("foo.one", foo);
   d.on("foo.two", foo);
