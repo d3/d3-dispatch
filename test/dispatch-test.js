@@ -17,6 +17,9 @@ tape("dispatch(type…) throws an error if a specified type name is illegal", fu
   test.throws(function() { dispatch.dispatch("__proto__"); });
   test.throws(function() { dispatch.dispatch("hasOwnProperty"); });
   test.throws(function() { dispatch.dispatch(""); });
+  test.throws(function() { dispatch.dispatch("foo.bar"); });
+  test.throws(function() { dispatch.dispatch("foo bar"); });
+  test.throws(function() { dispatch.dispatch("foo\tbar"); });
   test.end();
 });
 
