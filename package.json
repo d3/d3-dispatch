@@ -1,9 +1,6 @@
 {
   "name": "d3-dispatch",
-  "version": "2.0.0-rc.1",
-  "publishConfig": {
-    "tag": "next"
-  },
+  "version": "2.0.0",
   "description": "Register named callbacks and call them with arguments.",
   "keywords": [
     "d3",
