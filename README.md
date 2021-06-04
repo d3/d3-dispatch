@@ -1,11 +1,11 @@
 # d3-dispatch
 
-Dispatching is a convenient mechanism for separating concerns with loosely-coupled code: register named callbacks and then call them with arbitrary arguments. A variety of D3 components, such as [d3-request](https://github.com/d3/d3-request), use this mechanism to emit events to listeners. Think of this like Node’s [EventEmitter](https://nodejs.org/api/events.html), except every listener has a well-defined name so it’s easy to remove or replace them.
+Dispatching is a convenient mechanism for separating concerns with loosely-coupled code: register named callbacks and then call them with arbitrary arguments. A variety of D3 components, such as [d3-drag](https://github.com/d3/d3-drag), use this mechanism to emit events to listeners. Think of this like Node’s [EventEmitter](https://nodejs.org/api/events.html), except every listener has a well-defined name so it’s easy to remove or replace them.
 
 For example, to create a dispatch for *start* and *end* events:
 
 ```js
-var dispatch = d3.dispatch("start", "end");
+const dispatch = d3.dispatch("start", "end");
 ```
 
 You can then register callbacks for these events using [*dispatch*.on](#dispatch_on):
@@ -36,9 +36,11 @@ If you use npm, `npm install d3-dispatch`. You can also download the [latest rel
 
 ```html
 <script type="module">
+
 import {dispatch} from "https://cdn.skypack.dev/d3-dispatch@3";
 
-const channel = dispatch("start", "end");
+const d = dispatch("start", "end");
+
 </script>
 ```
 
@@ -48,7 +50,8 @@ For legacy environments, you can load d3-dispatch’s UMD bundle from an npm-bas
 <script src="https://cdn.jsdelivr.net/npm/d3-dispatch@3"></script>
 <script>
 
-const channel = d3.dispatch("start", "end");
+const d = d3.dispatch("start", "end");
+
 </script>
 ```
 
