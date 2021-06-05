@@ -1,6 +1,6 @@
 {
   "name": "d3-dispatch",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Register named callbacks and call them with arguments.",
   "homepage": "https://d3js.org/d3-dispatch/",
   "repository": {
