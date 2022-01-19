@@ -1,8 +1,8 @@
 # d3-dispatch
 
-Dispatching is a convenient mechanism for separating concerns with loosely-coupled code: register named callbacks and then call them with arbitrary arguments. A variety of D3 components, such as [d3-drag](https://github.com/d3/d3-drag), use this mechanism to emit events to listeners. Think of this like Node’s [EventEmitter](https://nodejs.org/api/events.html), except every listener has a well-defined name so it’s easy to remove or replace them.
+Dispatching is a convenient mechanism for separating concerns with loosely-coupled code: create registry of custom event names, then attach callbacks to them, and then invoke the callbacks by an event name with arbitrary arguments. A variety of D3 components, such as [d3-drag](https://github.com/d3/d3-drag), use this mechanism to emit events to listeners. Think of this like Node’s [EventEmitter](https://nodejs.org/api/events.html), except every listener has a well-defined name so it’s easy to remove or replace them.
 
-For example, to create a dispatch for *start* and *end* events:
+For example, to define *start* and *end* events:
 
 ```js
 const dispatch = d3.dispatch("start", "end");
@@ -21,6 +21,7 @@ Then, you can invoke all the *start* callbacks using [*dispatch*.call](#dispatch
 ```js
 dispatch.call("start");
 ```
+Note that callbacks for both `"start"` and `"start.foo"` strings will be invoked as a result on this call.
 
 Like *function*.call, you may also specify the `this` context and any arguments:
 
@@ -61,7 +62,7 @@ const d = d3.dispatch("start", "end");
 
 <a name="dispatch" href="#dispatch">#</a> d3.<b>dispatch</b>(<i>types…</i>) · [Source](https://github.com/d3/d3-dispatch/blob/master/src/dispatch.js)
 
-Creates a new dispatch for the specified event *types*. Each *type* is a string, such as `"start"` or `"end"`.
+Creates a dispatch and defines specified event *types*. Each *type* is a string, such as `"start"` or `"end"`.
 
 <a name="dispatch_on" href="#dispatch_on">#</a> *dispatch*.<b>on</b>(<i>typenames</i>[, <i>callback</i>]) · [Source](https://github.com/d3/d3-dispatch/blob/master/src/dispatch.js)
 
