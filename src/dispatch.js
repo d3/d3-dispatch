@@ -1,4 +1,4 @@
-var noop = {value: () => {}};
+var noop = {value: function() {}};
 
 function dispatch() {
   for (var i = 0, n = arguments.length, _ = {}, t; i < n; ++i) {
