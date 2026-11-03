@@ -1,18 +1,18 @@
-import {test} from "vitest";
+import {it} from "vitest";
 import assert from "assert";
 import {dispatch} from "../src/index.js";
 
-test("dispatch(type…) returns a dispatch object with the specified types", () => {
+it("dispatch(type…) returns a dispatch object with the specified types", () => {
   const d = dispatch("foo", "bar");
   assert(d instanceof dispatch);
 });
 
-test("dispatch(type…) does not throw an error if a specified type name collides with a dispatch method", () => {
+it("dispatch(type…) does not throw an error if a specified type name collides with a dispatch method", () => {
   const d = dispatch("on");
   assert(d instanceof dispatch);
 });
 
-test("dispatch(type…) throws an error if a specified type name is illegal", () => {
+it("dispatch(type…) throws an error if a specified type name is illegal", () => {
   assert.throws(() => { dispatch("__proto__"); });
   assert.throws(() => { dispatch("hasOwnProperty"); });
   assert.throws(() => { dispatch(""); });
@@ -21,11 +21,11 @@ test("dispatch(type…) throws an error if a specified type name is illegal", ()
   assert.throws(() => { dispatch("foo\tbar"); });
 });
 
-test("dispatch(type…) throws an error if a specified type name is a duplicate", () => {
+it("dispatch(type…) throws an error if a specified type name is a duplicate", () => {
   assert.throws(() => { dispatch("foo", "foo"); });
 });
 
-test("dispatch(type).call(type, object, arguments…) invokes callbacks of the specified type", () => {
+it("dispatch(type).call(type, object, arguments…) invokes callbacks of the specified type", () => {
   let foo = 0;
   let bar = 0;
   const d = dispatch("foo", "bar").on("foo", function() { ++foo; }).on("bar", function() { ++bar; });
@@ -38,7 +38,7 @@ test("dispatch(type).call(type, object, arguments…) invokes callbacks of the s
   assert.strictEqual(bar, 1);
 });
 
-test("dispatch(type).call(type, object, arguments…) invokes callbacks with specified arguments and context", () => {
+it("dispatch(type).call(type, object, arguments…) invokes callbacks with specified arguments and context", () => {
   const results = [];
   const foo = {};
   const bar = {};
@@ -49,7 +49,7 @@ test("dispatch(type).call(type, object, arguments…) invokes callbacks with spe
   assert.deepStrictEqual(results, [{this: foo, arguments: [bar]}, {this: bar, arguments: [foo, 42, "baz"]}]);
 });
 
-test("dispatch(type).call(type, object, arguments…) invokes callbacks in the order they were added", () => {
+it("dispatch(type).call(type, object, arguments…) invokes callbacks in the order they were added", () => {
   const results = [];
   const d = dispatch("foo");
   d.on("foo.a", function() { results.push("A"); });
@@ -61,12 +61,12 @@ test("dispatch(type).call(type, object, arguments…) invokes callbacks in the o
   assert.deepStrictEqual(results, ["A", "B", "B", "C", "A"]);
 });
 
-test("dispatch(type).call(type, object, arguments…) returns undefined", () => {
+it("dispatch(type).call(type, object, arguments…) returns undefined", () => {
   const d = dispatch("foo");
   assert.strictEqual(d.call("foo"), undefined);
 });
 
-test("dispatch(type).apply(type, object, arguments) invokes callbacks of the specified type", () => {
+it("dispatch(type).apply(type, object, arguments) invokes callbacks of the specified type", () => {
   let foo = 0;
   let bar = 0;
   const d = dispatch("foo", "bar").on("foo", function() { ++foo; }).on("bar", function() { ++bar; });
@@ -79,7 +79,7 @@ test("dispatch(type).apply(type, object, arguments) invokes callbacks of the spe
   assert.strictEqual(bar, 1);
 });
 
-test("dispatch(type).apply(type, object, arguments) invokes callbacks with specified arguments and context", () => {
+it("dispatch(type).apply(type, object, arguments) invokes callbacks with specified arguments and context", () => {
   const results = [];
   const foo = {};
   const bar = {};
@@ -90,7 +90,7 @@ test("dispatch(type).apply(type, object, arguments) invokes callbacks with speci
   assert.deepStrictEqual(results, [{this: foo, arguments: [bar]}, {this: bar, arguments: [foo, 42, "baz"]}]);
 });
 
-test("dispatch(type).apply(type, object, arguments) invokes callbacks in the order they were added", () => {
+it("dispatch(type).apply(type, object, arguments) invokes callbacks in the order they were added", () => {
   const results = [];
   const d = dispatch("foo");
   d.on("foo.a", function() { results.push("A"); });
@@ -102,17 +102,17 @@ test("dispatch(type).apply(type, object, arguments) invokes callbacks in the ord
   assert.deepStrictEqual(results, ["A", "B", "B", "C", "A"]);
 });
 
-test("dispatch(type).apply(type, object, arguments) returns undefined", () => {
+it("dispatch(type).apply(type, object, arguments) returns undefined", () => {
   const d = dispatch("foo");
   assert.strictEqual(d.apply("foo"), undefined);
 });
 
-test("dispatch(type).on(type, f) returns the dispatch object", () => {
+it("dispatch(type).on(type, f) returns the dispatch object", () => {
   const d = dispatch("foo");
   assert.strictEqual(d.on("foo", function() {}), d);
 });
 
-test("dispatch(type).on(type, f) replaces an existing callback, if present", () => {
+it("dispatch(type).on(type, f) replaces an existing callback, if present", () => {
   let foo = 0;
   let bar = 0;
   const d = dispatch("foo", "bar");
@@ -126,7 +126,7 @@ test("dispatch(type).on(type, f) replaces an existing callback, if present", () 
   assert.strictEqual(bar, 1);
 });
 
-test("dispatch(type).on(type, f) replacing an existing callback with itself has no effect", () => {
+it("dispatch(type).on(type, f) replacing an existing callback with itself has no effect", () => {
   let foo = 0;
   const FOO = function() { ++foo; };
   const d = dispatch("foo").on("foo", FOO);
@@ -137,7 +137,7 @@ test("dispatch(type).on(type, f) replacing an existing callback with itself has 
   assert.strictEqual(foo, 2);
 });
 
-test("dispatch(type).on(type., …) is equivalent to dispatch(type).on(type, …)", () => {
+it("dispatch(type).on(type., …) is equivalent to dispatch(type).on(type, …)", () => {
   const d = dispatch("foo");
   let foos = 0;
   let bars = 0;
@@ -159,7 +159,7 @@ test("dispatch(type).on(type., …) is equivalent to dispatch(type).on(type, …
   assert.strictEqual(bars, 1);
 });
 
-test("dispatch(type).on(type, null) removes an existing callback, if present", () => {
+it("dispatch(type).on(type, null) removes an existing callback, if present", () => {
   let foo = 0;
   const d = dispatch("foo", "bar");
   d.on("foo", function() { ++foo; });
@@ -170,7 +170,7 @@ test("dispatch(type).on(type, null) removes an existing callback, if present", (
   assert.strictEqual(foo, 1);
 });
 
-test("dispatch(type).on(type, null) does not remove a shared callback", () => {
+it("dispatch(type).on(type, null) does not remove a shared callback", () => {
   let a = 0;
   const A = function() { ++a; };
   const d = dispatch("foo", "bar").on("foo", A).on("bar", A);
@@ -182,7 +182,7 @@ test("dispatch(type).on(type, null) does not remove a shared callback", () => {
   assert.strictEqual(a, 3);
 });
 
-test("dispatch(type).on(type, null) removing a missing callback has no effect", () => {
+it("dispatch(type).on(type, null) removing a missing callback has no effect", () => {
   let a = 0;
   const d = dispatch("foo");
   function A() { ++a; }
@@ -191,7 +191,7 @@ test("dispatch(type).on(type, null) removing a missing callback has no effect", 
   assert.strictEqual(a, 0);
 });
 
-test("dispatch(type).on(type, null) during a callback does not invoke the old callback", () => {
+it("dispatch(type).on(type, null) during a callback does not invoke the old callback", () => {
   let a = 0;
   let b = 0;
   let c = 0;
@@ -204,7 +204,7 @@ test("dispatch(type).on(type, null) during a callback does not invoke the old ca
   assert.strictEqual(c, 0);
 });
 
-test("dispatch(type).on(type, f) during a callback does not invoke the old or the new callback", () => {
+it("dispatch(type).on(type, f) during a callback does not invoke the old or the new callback", () => {
   let a = 0;
   let b = 0;
   let c = 0;
@@ -218,7 +218,7 @@ test("dispatch(type).on(type, f) during a callback does not invoke the old or th
   assert.strictEqual(c, 0);
 });
 
-test("dispatch(type).on(type, f) during a callback does not invoke the new callback", () => {
+it("dispatch(type).on(type, f) during a callback does not invoke the new callback", () => {
   let a = 0;
   let b = 0;
   const A = function() { ++a; d.on("foo.B", B); }; // add B
@@ -229,7 +229,7 @@ test("dispatch(type).on(type, f) during a callback does not invoke the new callb
   assert.strictEqual(b, 0);
 });
 
-test("dispatch(type).on(type, f) coerces type to a string", () => {
+it("dispatch(type).on(type, f) coerces type to a string", () => {
   const f = function() {};
   const g = function() {};
   const d = dispatch(null, undefined).on(null, f).on(undefined, g);
@@ -237,7 +237,7 @@ test("dispatch(type).on(type, f) coerces type to a string", () => {
   assert.strictEqual(d.on(undefined), g);
 });
 
-test("dispatch(\"foo\", \"bar\").on(\"foo bar\", f) adds a callback for both types", () => {
+it("dispatch(\"foo\", \"bar\").on(\"foo bar\", f) adds a callback for both types", () => {
   let foos = 0;
   const foo = function() { ++foos; };
   const d = dispatch("foo", "bar").on("foo bar", foo);
@@ -249,7 +249,7 @@ test("dispatch(\"foo\", \"bar\").on(\"foo bar\", f) adds a callback for both typ
   assert.strictEqual(foos, 2);
 });
 
-test("dispatch(\"foo\").on(\"foo.one foo.two\", f) adds a callback for both typenames", () => {
+it("dispatch(\"foo\").on(\"foo.one foo.two\", f) adds a callback for both typenames", () => {
   let foos = 0;
   const foo = function() { ++foos; };
   const d = dispatch("foo").on("foo.one foo.two", foo);
@@ -259,7 +259,7 @@ test("dispatch(\"foo\").on(\"foo.one foo.two\", f) adds a callback for both type
   assert.strictEqual(foos, 2);
 });
 
-test("dispatch(\"foo\", \"bar\").on(\"foo bar\") returns the callback for either type", () => {
+it("dispatch(\"foo\", \"bar\").on(\"foo bar\") returns the callback for either type", () => {
   const foo = function() {};
   const d = dispatch("foo", "bar");
   d.on("foo", foo);
@@ -270,7 +270,7 @@ test("dispatch(\"foo\", \"bar\").on(\"foo bar\") returns the callback for either
   assert.strictEqual(d.on("bar foo"), foo);
 });
 
-test("dispatch(\"foo\").on(\"foo.one foo.two\") returns the callback for either typename", () => {
+it("dispatch(\"foo\").on(\"foo.one foo.two\") returns the callback for either typename", () => {
   const foo = function() {};
   const d = dispatch("foo");
   d.on("foo.one", foo);
@@ -285,7 +285,7 @@ test("dispatch(\"foo\").on(\"foo.one foo.two\") returns the callback for either 
   assert.strictEqual(d.on("foo.two foo"), foo);
 });
 
-test("dispatch(\"foo\").on(\".one .two\", null) removes the callback for either typename", () => {
+it("dispatch(\"foo\").on(\".one .two\", null) removes the callback for either typename", () => {
   const foo = function() {};
   const d = dispatch("foo");
   d.on("foo.one", foo);
@@ -295,21 +295,21 @@ test("dispatch(\"foo\").on(\".one .two\", null) removes the callback for either 
   assert.strictEqual(d.on("foo.two"), undefined);
 });
 
-test("dispatch(type).on(type, f) throws an error if f is not a function", () => {
+it("dispatch(type).on(type, f) throws an error if f is not a function", () => {
   assert.throws(() => { dispatch("foo").on("foo", 42); });
 });
 
-test("dispatch(…).on(type, f) throws an error if the type is unknown", () => {
+it("dispatch(…).on(type, f) throws an error if the type is unknown", () => {
   assert.throws(() => { dispatch("foo").on("bar", () => {}); });
   assert.throws(() => { dispatch("foo").on("__proto__", () => {}); });
 });
 
-test("dispatch(…).on(type) throws an error if the type is unknown", () => {
+it("dispatch(…).on(type) throws an error if the type is unknown", () => {
   assert.throws(() => { dispatch("foo").on("bar"); });
   assert.throws(() => { dispatch("foo").on("__proto__"); });
 });
 
-test("dispatch(type).on(type) returns the expected callback", () => {
+it("dispatch(type).on(type) returns the expected callback", () => {
   const d = dispatch("foo");
   function A() {}
   function B() {}
@@ -320,12 +320,12 @@ test("dispatch(type).on(type) returns the expected callback", () => {
   assert.strictEqual(d.on("foo"), C);
 });
 
-test("dispatch(type).on(.name) returns undefined when retrieving a callback", () => {
+it("dispatch(type).on(.name) returns undefined when retrieving a callback", () => {
   const d = dispatch("foo").on("foo.a", function() {});
   assert.strictEqual(d.on(".a"), undefined);
 });
 
-test("dispatch(type).on(.name, null) removes all callbacks with the specified name", () => {
+it("dispatch(type).on(.name, null) removes all callbacks with the specified name", () => {
   const d = dispatch("foo", "bar"), a = {}, b = {}, c = {}, those = [];
   function A() { those.push(a); }
   function B() { those.push(b); }
@@ -336,7 +336,7 @@ test("dispatch(type).on(.name, null) removes all callbacks with the specified na
   assert.deepStrictEqual(those, [c]);
 });
 
-test("dispatch(type).on(.name, f) has no effect", () => {
+it("dispatch(type).on(.name, f) has no effect", () => {
   const d = dispatch("foo", "bar"), a = {}, b = {}, those = [];
   function A() { those.push(a); }
   function B() { those.push(b); }
@@ -347,7 +347,7 @@ test("dispatch(type).on(.name, f) has no effect", () => {
   assert.strictEqual(d.on(".a"), undefined);
 });
 
-test("dispatch(type…).copy() returns an isolated copy", () => {
+it("dispatch(type…).copy() returns an isolated copy", () => {
   const foo = function() {};
   const bar = function() {};
   const d0 = dispatch("foo", "bar").on("foo", foo).on("bar", bar);
