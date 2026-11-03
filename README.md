@@ -7,6 +7,6 @@ Dispatching is a low-level interaction mechanism that allows you to register nam
 ## Resources
 
 - [Documentation](https://d3js.org/d3-dispatch)
-- [Examples](https://observablehq.com/collection/@d3/d3-dispatch)
+- [Examples](https://observablehq.com/@d3/-/collection/d3-dispatch)
 - [Releases](https://github.com/d3/d3-dispatch/releases)
 - [Getting help](https://d3js.org/community)
