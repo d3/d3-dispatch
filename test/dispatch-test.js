@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import {it} from "vitest";
-import {dispatch} from "../src/index.js";
+import {dispatch} from "d3-dispatch";
 
 it("dispatch(type…) returns a dispatch object with the specified types", () => {
   const d = dispatch("foo", "bar");
