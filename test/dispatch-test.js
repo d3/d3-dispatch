@@ -1,5 +1,5 @@
+import assert from "node:assert";
 import {it} from "vitest";
-import assert from "assert";
 import {dispatch} from "../src/index.js";
 
 it("dispatch(type…) returns a dispatch object with the specified types", () => {
